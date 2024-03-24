@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Smoke test" verbose="5">
+    <test name="Smoke test ">
+        <packages>
+            <package name="sda.homeworks.day18"></package>
+        </packages>
+
+    </test>
+</suite>
