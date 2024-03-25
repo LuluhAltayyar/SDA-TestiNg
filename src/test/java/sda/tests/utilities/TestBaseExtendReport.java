@@ -1,5 +1,4 @@
-package sda.tests.utilities;
-
+package sda.utilities;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
@@ -25,22 +24,19 @@ public class TestBaseExtendReport {
 
     protected static ExtentTest extentTest; // Our object that keeps track of whether our test has passed or failed. It is also used for taking screenshots.
 
-
-
-    @BeforeMethod
-    public void setup(){
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+    @BeforeClass
+    public void setupClass(){
         extentReports = new ExtentReports();
+
         // A date string is created for the file we will save
-        String currentDate = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss").format(new Date());
+        String currentDate = new SimpleDateFormat("yyyy_MM_dd_hh:mm:ss").format(new Date());
         String filePath = System.getProperty("user.dir") + "/test-output/reports/testReport_"+currentDate+".html";
 
         // Object to create an HTML report is initialized with the file path
         extentHtmlReporter = new ExtentSparkReporter(filePath);
         // Our extent report object for reporting is linked with the HTML reporter
         extentReports.attachReporter(extentHtmlReporter);
+
         // Additional optional information related to the report is provided
         extentReports.setSystemInfo("Environment", "QA");
         extentReports.setSystemInfo("Browser", "Chrome");
@@ -53,15 +49,24 @@ public class TestBaseExtendReport {
         extentTest = extentReports.createTest(getClass().getSimpleName() + " - " + Thread.currentThread().getStackTrace()[2].getMethodName());
     }
 
+    @BeforeMethod
+    public void setup(){
+        driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+
+    }
+
     @AfterMethod
     public void teardown(){
         driver.quit();
-        extentReports.flush();
+        // extentReports.flush();
     }
 
     @AfterClass
     public static void afterClass() {
-        //   extentReports.flush();
+        extentReports.flush();
     }
 
 }
